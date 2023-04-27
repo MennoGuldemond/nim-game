@@ -1,0 +1,17 @@
+.game-grid {
+  display: flex;
+  gap: 2em;
+  align-items: end;
+}
+
+.game-chip {
+  cursor: pointer;
+  text-align: center;
+  background-color: red;
+  width: 200px;
+  height: 25px;
+}
+
+.game-chip:hover {
+  background-color: darkred;
+}
