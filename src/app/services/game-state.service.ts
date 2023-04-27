@@ -7,7 +7,9 @@ export class GameStateService {
   aantalStapels: number = 0;
   stapels: number[] = [];
   isSpelersBeurt: boolean = true;
-  isActief: boolean = false;
+  isActief: boolean;
+  gameOver: boolean;
+  resultaatTekst: string;
 
   start(aantalStapels: number, stapels: number[]): void {
     this.isActief = true;
@@ -18,6 +20,20 @@ export class GameStateService {
 
   verwijderFiches(stapelNummer: number, verwijderAantal: number): void {
     this.stapels[stapelNummer] = this.stapels[stapelNummer] - verwijderAantal;
+
+    // Check of het spel afgelopen is
+    console.log(this.stapels);
+    if (this.stapels.every((x) => +x < 1)) {
+      this.gameOver = true;
+      if (this.isSpelersBeurt) {
+        console.log('Gewonnen!');
+        this.resultaatTekst = 'Je hebt gewonnen!';
+      } else {
+        console.log('Verloren =(');
+        this.resultaatTekst = 'Je hebt verloren =(';
+      }
+    }
+
     this.isSpelersBeurt = !this.isSpelersBeurt;
 
     if (!this.isSpelersBeurt) {
@@ -27,18 +43,21 @@ export class GameStateService {
 
   computerZet(): void {
     if (this.isNimSumEven(this.stapels)) {
-      // Doe random zet, de computer kan niet winnen.
       console.log('De computer kon geen winnende zet doen.');
+      // Doe random zet, de computer kan niet winnen.
+      this.VerwijderRandomFiche();
     } else {
       for (let i = 0; i < this.stapels.length; i++) {
         const testStapelFichces = this.getDummyArray(this.stapels[i]);
         for (let j = 1; j <= testStapelFichces.length; j++) {
-          // Na elke fich verwijderen, checken of we een winnende staat hebben.
-          const testStapels = this.stapels;
+          // Na elke fiche verwijderen, checken of we een winnende staat hebben.
+          const testStapels = { ...this.stapels };
           testStapels[i] = testStapels[i] - j;
+          console.log(`check stapel: ${i}, fiche: ${j}`);
           if (this.isNimSumEven(testStapels)) {
             console.log('De computer heeft een winnende zet gevonden.');
-            console.log(testStapels);
+            this.verwijderFiches(i, j);
+            return;
           }
         }
       }
@@ -82,5 +101,22 @@ export class GameStateService {
       array[i] = i;
     }
     return array;
+  }
+
+  VerwijderRandomFiche(): void {
+    const gekozenStapel = this.getRandomInt(this.stapels.length);
+    this.verwijderFiches(
+      gekozenStapel,
+      this.getRandomInt(this.stapels[gekozenStapel])
+    );
+  }
+
+  getRandomInt(max: number): number {
+    return 1 + Math.floor(Math.random() * max);
+  }
+
+  eindigSpel(): void {
+    this.isActief = false;
+    this.gameOver = false;
   }
 }

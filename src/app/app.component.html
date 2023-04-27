@@ -37,12 +37,24 @@
   </button>
 </div>
 
+<div *ngIf="gameState.gameOver">
+  <h1>{{ gameState.resultaatTekst }}</h1>
+  <button
+    mat-raised-button
+    color="primary"
+    [disabled]="!gameForm.valid"
+    (click)="gameState.eindigSpel()"
+  >
+    Opnieuw spelen
+  </button>
+</div>
+
 <div class="game-grid">
   <div *ngFor="let aantal of gameState.stapels; index as i" class="game-column">
     <div
       *ngFor="let fichNummer of this.gameState.getDummyArray(aantal)"
       class="game-chip"
-      (click)="onFichClicked(i, fichNummer)"
+      (click)="onFicheClicked(i, fichNummer)"
     >
       {{ fichNummer }}
     </div>

@@ -50,8 +50,8 @@ export class AppComponent implements OnInit {
     this.gameState.start(formValue.aantalStapels, formValue.stapels);
   }
 
-  onFichClicked(stapelNummer: number, fichNummer: number): void {
-    // console.log(`stapel: ${stapelNummer}, Fich: ${fichNummer}`);
+  onFicheClicked(stapelNummer: number, fichNummer: number): void {
+    // console.log(`stapel: ${stapelNummer}, Fiche: ${fichNummer}`);
     this.gameState.verwijderFiches(stapelNummer, fichNummer + 1);
   }
 }
