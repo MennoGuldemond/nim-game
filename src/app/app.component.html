@@ -40,7 +40,7 @@
 <div class="game-grid">
   <div *ngFor="let aantal of gameState.stapels; index as i" class="game-column">
     <div
-      *ngFor="let fichNummer of this.getDummyArray(aantal)"
+      *ngFor="let fichNummer of this.gameState.getDummyArray(aantal)"
       class="game-chip"
       (click)="onFichClicked(i, fichNummer)"
     >

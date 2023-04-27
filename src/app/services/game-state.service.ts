@@ -26,15 +26,33 @@ export class GameStateService {
   }
 
   computerZet(): void {
+    if (this.isNimSumEven(this.stapels)) {
+      // Doe random zet, de computer kan niet winnen.
+      console.log('De computer kon geen winnende zet doen.');
+    } else {
+      for (let i = 0; i < this.stapels.length; i++) {
+        const testStapelFichces = this.getDummyArray(this.stapels[i]);
+        for (let j = 1; j <= testStapelFichces.length; j++) {
+          // Na elke fich verwijderen, checken of we een winnende staat hebben.
+          const testStapels = this.stapels;
+          testStapels[i] = testStapels[i] - j;
+          if (this.isNimSumEven(testStapels)) {
+            console.log('De computer heeft een winnende zet gevonden.');
+            console.log(testStapels);
+          }
+        }
+      }
+    }
+  }
+
+  isNimSumEven(stapelStaat: number[]): boolean {
     // Zet stapel lengtes om naar binaire getallen
     const binaireStapels = [];
-    for (let i = 0; i < this.stapels.length; i++) {
-      binaireStapels.push(this.getalNaarBinair(this.stapels[i]));
+    for (let i = 0; i < stapelStaat.length; i++) {
+      binaireStapels.push(this.getalNaarBinair(stapelStaat[i]));
     }
+    // console.log(binaireStapels);
 
-    console.log(binaireStapels);
-
-    // Wat is de NIM sum?
     // Tel alle binaire getallen bij elkaar op zonder 'restwaarde'.
     const indexOneven = [false, false, false, false];
 
@@ -42,7 +60,8 @@ export class GameStateService {
       indexOneven[i] = this.isIndexOneven(binaireStapels, i);
     }
 
-    console.log(indexOneven);
+    // console.log(indexOneven);
+    return indexOneven.every((x) => x === false);
   }
 
   getalNaarBinair(getal): any {
@@ -55,5 +74,13 @@ export class GameStateService {
       som += +binaireStapels[i].charAt(index);
     }
     return som % 2 !== 0;
+  }
+
+  getDummyArray(aantal: number): any[] {
+    let array = [];
+    for (let i = 0; i < aantal; i++) {
+      array[i] = i;
+    }
+    return array;
   }
 }

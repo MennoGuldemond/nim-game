@@ -54,12 +54,4 @@ export class AppComponent implements OnInit {
     // console.log(`stapel: ${stapelNummer}, Fich: ${fichNummer}`);
     this.gameState.verwijderFiches(stapelNummer, fichNummer + 1);
   }
-
-  getDummyArray(aantal: number): any[] {
-    let array = [];
-    for (let i = 0; i < aantal; i++) {
-      array[i] = i;
-    }
-    return array;
-  }
 }
