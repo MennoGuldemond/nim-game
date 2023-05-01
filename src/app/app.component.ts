@@ -51,7 +51,19 @@ export class AppComponent implements OnInit {
   }
 
   onFicheClicked(stapelNummer: number, fichNummer: number): void {
-    // console.log(`stapel: ${stapelNummer}, Fiche: ${fichNummer}`);
-    this.gameState.verwijderFiches(stapelNummer, fichNummer + 1);
+    if (this.gameState.isSpelersBeurt) {
+      this.gameState.verwijderFiches(stapelNummer, fichNummer + 1);
+    }
+  }
+
+  onClickRandom(): void {
+    const aantalStapels = this.gameState.getRandomInt(this.maxStapels);
+    this.gameForm.controls.aantalStapels.setValue(aantalStapels);
+    setTimeout(() => {
+      for (let i = 0; i < this.gameForm.controls.stapels.controls.length; i++) {
+        const aantalFiches = this.gameState.getRandomInt(this.maxFiches);
+        this.gameForm.controls.stapels.controls[i].setValue(aantalFiches);
+      }
+    }, 10);
   }
 }

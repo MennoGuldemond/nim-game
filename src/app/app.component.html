@@ -1,6 +1,6 @@
-<div *ngIf="!gameState.isActief">
+<div *ngIf="!gameState.isActief" class="nim-container">
   <form [formGroup]="gameForm">
-    <mat-form-field>
+    <mat-form-field class="stapel-input">
       <mat-label for="aantalStapels">Aantal stapels</mat-label>
       <input
         matInput
@@ -11,12 +11,10 @@
       />
     </mat-form-field>
 
-    <h6>Aantal Fishes</h6>
-
     <mat-form-field
       *ngFor="let control of gameForm.controls.stapels.controls; index as i"
     >
-      <mat-label for="stapels">{{ i }}</mat-label>
+      <mat-label for="stapels">{{ "stapel " + i }}</mat-label>
       <input
         matInput
         min="1"
@@ -27,17 +25,27 @@
     </mat-form-field>
   </form>
 
-  <button
-    mat-raised-button
-    color="primary"
-    [disabled]="!gameForm.valid"
-    (click)="onClickedStart()"
-  >
-    Start
-  </button>
+  <div class="button-container">
+    <button
+      mat-raised-button
+      color="primary"
+      [disabled]="!gameForm.valid"
+      (click)="onClickRandom()"
+    >
+      Random stapels
+    </button>
+    <button
+      mat-raised-button
+      color="primary"
+      [disabled]="!gameForm.valid"
+      (click)="onClickedStart()"
+    >
+      Start
+    </button>
+  </div>
 </div>
 
-<div *ngIf="gameState.gameOver">
+<div *ngIf="gameState.gameOver" class="nim-container">
   <h1>{{ gameState.resultaatTekst }}</h1>
   <button
     mat-raised-button
@@ -49,17 +57,24 @@
   </button>
 </div>
 
-<div class="game-grid">
+<div class="computer-tekst">
+  <h1
+    *ngIf="
+      gameState.isActief && !gameState.isSpelersBeurt && !gameState.gameOver
+    "
+  >
+    De computer is aan zet
+  </h1>
+</div>
+
+<div class="game-grid nim-container">
   <div *ngFor="let aantal of gameState.stapels; index as i" class="game-column">
     <div
-      *ngFor="let fichNummer of this.gameState.getDummyArray(aantal)"
+      *ngFor="let fichNummer of gameState.getDummyArray(aantal)"
       class="game-chip"
       (click)="onFicheClicked(i, fichNummer)"
     >
-      {{ fichNummer }}
+      {{ fichNummer + 1 }}
     </div>
   </div>
 </div>
-
-<!-- <pre>{{ gameForm.getRawValue() | json }}</pre> -->
-<!-- <pre>{{ gameState.stapels | json }}</pre> -->

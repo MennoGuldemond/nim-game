@@ -10,6 +10,7 @@ export class GameStateService {
   isActief: boolean;
   gameOver: boolean;
   resultaatTekst: string;
+  computerBeurtTijd = 1200;
 
   start(aantalStapels: number, stapels: number[]): void {
     this.isActief = true;
@@ -19,25 +20,29 @@ export class GameStateService {
   }
 
   verwijderFiches(stapelNummer: number, verwijderAantal: number): void {
-    this.stapels[stapelNummer] = this.stapels[stapelNummer] - verwijderAantal;
+    if (!this.gameOver) {
+      this.stapels[stapelNummer] = this.stapels[stapelNummer] - verwijderAantal;
 
-    // Check of het spel afgelopen is
-    console.log(this.stapels);
-    if (this.stapels.every((x) => +x < 1)) {
-      this.gameOver = true;
-      if (this.isSpelersBeurt) {
-        console.log('Gewonnen!');
-        this.resultaatTekst = 'Je hebt gewonnen!';
-      } else {
-        console.log('Verloren =(');
-        this.resultaatTekst = 'Je hebt verloren =(';
+      // Check of het spel afgelopen is
+      if (this.stapels.every((x) => +x < 1)) {
+        this.gameOver = true;
+        if (this.isSpelersBeurt) {
+          console.log('Gewonnen!');
+          this.resultaatTekst = 'Je hebt gewonnen!';
+        } else {
+          console.log('Verloren =(');
+          this.resultaatTekst = 'Je hebt verloren =(';
+        }
+        return;
       }
-    }
 
-    this.isSpelersBeurt = !this.isSpelersBeurt;
+      this.isSpelersBeurt = !this.isSpelersBeurt;
 
-    if (!this.isSpelersBeurt) {
-      this.computerZet();
+      if (!this.isSpelersBeurt) {
+        setTimeout(() => {
+          this.computerZet();
+        }, this.computerBeurtTijd);
+      }
     }
   }
 
@@ -51,9 +56,9 @@ export class GameStateService {
         const testStapelFichces = this.getDummyArray(this.stapels[i]);
         for (let j = 1; j <= testStapelFichces.length; j++) {
           // Na elke fiche verwijderen, checken of we een winnende staat hebben.
-          const testStapels = { ...this.stapels };
+          const testStapels = [...this.stapels];
           testStapels[i] = testStapels[i] - j;
-          console.log(`check stapel: ${i}, fiche: ${j}`);
+          // console.log(`check stapel: ${i}, fiche: ${j}`);
           if (this.isNimSumEven(testStapels)) {
             console.log('De computer heeft een winnende zet gevonden.');
             this.verwijderFiches(i, j);
@@ -70,7 +75,6 @@ export class GameStateService {
     for (let i = 0; i < stapelStaat.length; i++) {
       binaireStapels.push(this.getalNaarBinair(stapelStaat[i]));
     }
-    // console.log(binaireStapels);
 
     // Tel alle binaire getallen bij elkaar op zonder 'restwaarde'.
     const indexOneven = [false, false, false, false];
@@ -79,7 +83,6 @@ export class GameStateService {
       indexOneven[i] = this.isIndexOneven(binaireStapels, i);
     }
 
-    // console.log(indexOneven);
     return indexOneven.every((x) => x === false);
   }
 
