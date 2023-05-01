@@ -14,7 +14,7 @@
     <mat-form-field
       *ngFor="let control of gameForm.controls.stapels.controls; index as i"
     >
-      <mat-label for="stapels">{{ "stapel " + i }}</mat-label>
+      <mat-label for="stapels">{{ "stapel " + (+i + 1) }}</mat-label>
       <input
         matInput
         min="1"

@@ -10,7 +10,7 @@ export class GameStateService {
   isActief: boolean;
   gameOver: boolean;
   resultaatTekst: string;
-  computerBeurtTijd = 1200;
+  computerBeurtTijd = 1000;
 
   start(aantalStapels: number, stapels: number[]): void {
     this.isActief = true;
@@ -114,8 +114,8 @@ export class GameStateService {
     );
   }
 
-  getRandomInt(max: number): number {
-    return 1 + Math.floor(Math.random() * max);
+  getRandomInt(max: number, min: number = 1): number {
+    return Math.floor(Math.random() * (max + 1 - min)) + min;
   }
 
   eindigSpel(): void {
