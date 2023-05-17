@@ -20,6 +20,10 @@ export class GameStateService {
   }
 
   verwijderFiches(stapelNummer: number, verwijderAantal: number): void {
+    // console.log('staat', this.stapels);
+    // console.log('stapel', stapelNummer);
+    // console.log('verwijderAantal', verwijderAantal);
+
     if (!this.gameOver) {
       this.stapels[stapelNummer] = this.stapels[stapelNummer] - verwijderAantal;
 
@@ -115,7 +119,9 @@ export class GameStateService {
   }
 
   getRandomInt(max: number, min: number = 1): number {
-    return Math.floor(Math.random() * (max + 1 - min)) + min;
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min) + min);
   }
 
   eindigSpel(): void {
