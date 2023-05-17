@@ -12,6 +12,7 @@ export class GameStateService {
   gameOver: boolean;
   resultaatTekst: string;
   computerZet: Zet;
+  beginSituatie: number[];
 
   start(aantalStapels: number, stapels: number[]): void {
     this.isActief = true;
@@ -132,6 +133,9 @@ export class GameStateService {
   }
 
   eindigSpel(): void {
+    if (this.beginSituatie) {
+      location.reload();
+    }
     this.isActief = false;
     this.gameOver = false;
   }

@@ -1,4 +1,7 @@
-<div *ngIf="!gameState.isActief" class="nim-container">
+<div
+  *ngIf="!gameState.isActief && !gameState.beginSituatie"
+  class="nim-container"
+>
   <form [formGroup]="gameForm">
     <mat-form-field class="stapel-input">
       <mat-label for="aantalStapels">Aantal stapels</mat-label>
@@ -24,25 +27,25 @@
       />
     </mat-form-field>
   </form>
+</div>
 
-  <div class="button-container">
-    <button
-      mat-raised-button
-      color="primary"
-      [disabled]="!gameForm.valid"
-      (click)="onClickRandom()"
-    >
-      Random stapels
-    </button>
-    <button
-      mat-raised-button
-      color="primary"
-      [disabled]="!gameForm.valid"
-      (click)="onClickedStart()"
-    >
-      Start
-    </button>
-  </div>
+<div class="button-container" *ngIf="!gameState.isActief">
+  <button
+    mat-raised-button
+    color="primary"
+    [disabled]="!gameForm.valid || gameState.beginSituatie != null"
+    (click)="onClickRandom()"
+  >
+    Random stapels
+  </button>
+  <button
+    mat-raised-button
+    color="primary"
+    [disabled]="!gameForm.valid"
+    (click)="onClickedStart()"
+  >
+    Start
+  </button>
 </div>
 
 <div *ngIf="gameState.gameOver" class="nim-container">

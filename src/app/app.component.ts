@@ -13,6 +13,7 @@ export class AppComponent implements OnInit {
   minFiches = 1;
   maxStapels = 5;
   maxFiches = 10;
+  beginSituatieparams: string;
 
   gameForm = new FormGroup({
     aantalStapels: new FormControl(this.minStapels),
@@ -26,6 +27,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.queryParams.subscribe((params) => {
+      this.beginSituatieparams = params['beginSituatie'] || null;
       this.minStapels = +params['minStapels'] || 1;
       this.minFiches = +params['minFiches'] || 1;
       this.maxStapels = +params['maxStapels'] || 5;
@@ -45,6 +47,10 @@ export class AppComponent implements OnInit {
           Validators.max(this.maxFiches),
         ]);
       }
+
+      if (this.beginSituatieparams) {
+        this.startVanuitBeginSituatie();
+      }
     });
 
     this.gameForm.controls.aantalStapels.valueChanges.subscribe((aantal) => {
@@ -62,6 +68,16 @@ export class AppComponent implements OnInit {
         this.gameForm.controls.stapels = newFishes;
       }
     });
+  }
+
+  startVanuitBeginSituatie(): void {
+    this.gameState.beginSituatie = this.beginSituatieparams
+      .split('-')
+      .map((x) => +x);
+    this.gameState.start(
+      this.gameState.beginSituatie.length,
+      this.gameState.beginSituatie
+    );
   }
 
   onClickedStart(): void {
