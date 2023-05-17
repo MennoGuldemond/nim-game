@@ -65,7 +65,10 @@ export class GameStateService {
     if (this.isNimSumEven(this.stapels)) {
       console.log('De computer kon geen winnende zet doen.');
       // Kies random zet, de computer kan niet winnen.
-      const gekozenStapel = this.getRandomInt(this.stapels.length);
+      // Maar kies niet uit lege stapes.
+      const dummyStapels = this.stapels.filter((x) => x > 0);
+      const kiesConditieNummer = this.getRandomInt(dummyStapels.length + 1);
+      const gekozenStapel = this.stapels.indexOf(kiesConditieNummer);
       const aantal = this.getRandomInt(this.stapels[gekozenStapel] + 1);
       this.computerZet = new Zet(gekozenStapel, aantal);
     } else {
