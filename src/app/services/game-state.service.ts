@@ -20,7 +20,7 @@ export class GameStateService {
   }
 
   verwijderFiches(stapelNummer: number, verwijderAantal: number): void {
-    console.log('staat', this.stapels);
+    // console.log('staat', this.stapels);
     // console.log('stapel', stapelNummer);
     // console.log('verwijderAantal', verwijderAantal);
 
