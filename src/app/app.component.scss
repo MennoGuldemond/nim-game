@@ -42,6 +42,10 @@ mat-form-field {
     1px 1px 0 #fff;
 }
 
+.geselecteerd {
+  border: 4px solid #b53f51 !important;
+}
+
 .computer-tekst {
   height: 100px;
   & > h1 {

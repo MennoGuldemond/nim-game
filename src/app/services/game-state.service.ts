@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Zet } from '../models/zet';
 
 @Injectable({
   providedIn: 'root',
@@ -10,7 +11,7 @@ export class GameStateService {
   isActief: boolean;
   gameOver: boolean;
   resultaatTekst: string;
-  computerBeurtTijd = 1000;
+  computerZet: Zet;
 
   start(aantalStapels: number, stapels: number[]): void {
     this.isActief = true;
@@ -20,10 +21,6 @@ export class GameStateService {
   }
 
   verwijderFiches(stapelNummer: number, verwijderAantal: number): void {
-    // console.log('staat', this.stapels);
-    // console.log('stapel', stapelNummer);
-    // console.log('verwijderAantal', verwijderAantal);
-
     if (!this.gameOver) {
       this.stapels[stapelNummer] = this.stapels[stapelNummer] - verwijderAantal;
 
@@ -43,18 +40,18 @@ export class GameStateService {
       this.isSpelersBeurt = !this.isSpelersBeurt;
 
       if (!this.isSpelersBeurt) {
-        setTimeout(() => {
-          this.computerZet();
-        }, this.computerBeurtTijd);
+        this.computerBeurt();
       }
     }
   }
 
-  computerZet(): void {
+  computerBeurt(): void {
     if (this.isNimSumEven(this.stapels)) {
       console.log('De computer kon geen winnende zet doen.');
-      // Doe random zet, de computer kan niet winnen.
-      this.VerwijderRandomFiche();
+      // Kies random zet, de computer kan niet winnen.
+      const gekozenStapel = this.getRandomInt(this.stapels.length);
+      const aantal = this.getRandomInt(this.stapels[gekozenStapel] + 1);
+      this.computerZet = new Zet(gekozenStapel, aantal);
     } else {
       for (let i = 0; i < this.stapels.length; i++) {
         const testStapelFichces = this.getDummyArray(this.stapels[i]);
@@ -65,11 +62,21 @@ export class GameStateService {
           // console.log(`check stapel: ${i}, fiche: ${j}`);
           if (this.isNimSumEven(testStapels)) {
             console.log('De computer heeft een winnende zet gevonden.');
-            this.verwijderFiches(i, j);
+            this.computerZet = new Zet(i, j);
             return;
           }
         }
       }
+    }
+  }
+
+  computerZetUitvoeren(): void {
+    if (this.computerZet) {
+      this.verwijderFiches(
+        this.computerZet.stapelNummer,
+        this.computerZet.aantalFiches
+      );
+      this.computerZet = null;
     }
   }
 

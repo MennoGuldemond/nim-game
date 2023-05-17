@@ -57,20 +57,26 @@
   </button>
 </div>
 
-<div class="computer-tekst">
-  <h1
-    *ngIf="
-      gameState.isActief && !gameState.isSpelersBeurt && !gameState.gameOver
-    "
+<div
+  *ngIf="gameState.isActief && !gameState.isSpelersBeurt && !gameState.gameOver"
+  class="computer-tekst"
+>
+  <h1>De computer heeft een zet gekozen</h1>
+  <button
+    mat-raised-button
+    color="primary"
+    [disabled]="!gameForm.valid"
+    (click)="gameState.computerZetUitvoeren()"
   >
-    De computer is aan zet
-  </h1>
+    Ok
+  </button>
 </div>
 
 <div class="game-grid nim-container">
   <div *ngFor="let aantal of gameState.stapels; index as i" class="game-column">
     <div
       *ngFor="let fichNummer of gameState.getDummyArray(aantal)"
+      [ngClass]="getSelectedClass(i, fichNummer)"
       class="game-chip"
       (click)="onFicheClicked(i, fichNummer)"
     >

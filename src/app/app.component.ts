@@ -93,4 +93,16 @@ export class AppComponent implements OnInit {
       }
     }, 10);
   }
+
+  getSelectedClass(stapelNummer: number, ficheNummer: number): string {
+    if (this.gameState.computerZet) {
+      if (
+        this.gameState.computerZet.stapelNummer === stapelNummer &&
+        this.gameState.computerZet.aantalFiches > ficheNummer
+      ) {
+        return 'geselecteerd';
+      }
+    }
+    return '';
+  }
 }
