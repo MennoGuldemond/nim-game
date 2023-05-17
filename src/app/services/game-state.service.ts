@@ -20,7 +20,7 @@ export class GameStateService {
   }
 
   verwijderFiches(stapelNummer: number, verwijderAantal: number): void {
-    // console.log('staat', this.stapels);
+    console.log('staat', this.stapels);
     // console.log('stapel', stapelNummer);
     // console.log('verwijderAantal', verwijderAantal);
 
@@ -114,7 +114,7 @@ export class GameStateService {
     const gekozenStapel = this.getRandomInt(this.stapels.length);
     this.verwijderFiches(
       gekozenStapel,
-      this.getRandomInt(this.stapels[gekozenStapel])
+      this.getRandomInt(this.stapels[gekozenStapel] + 1)
     );
   }
 
