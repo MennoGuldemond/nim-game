@@ -79,14 +79,14 @@ export class AppComponent implements OnInit {
 
   onClickRandom(): void {
     const aantalStapels = this.gameState.getRandomInt(
-      this.maxStapels,
+      this.maxStapels + 1,
       this.minStapels
     );
     this.gameForm.controls.aantalStapels.setValue(aantalStapels);
     setTimeout(() => {
       for (let i = 0; i < this.gameForm.controls.stapels.controls.length; i++) {
         const aantalFiches = this.gameState.getRandomInt(
-          this.maxFiches,
+          this.maxFiches + 1,
           this.minFiches
         );
         this.gameForm.controls.stapels.controls[i].setValue(aantalFiches);
