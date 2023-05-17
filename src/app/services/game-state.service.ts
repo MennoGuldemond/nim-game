@@ -54,7 +54,11 @@ export class GameStateService {
   computerBeurt(): void {
     if (this.isFrans) {
       const rest = this.stapels[0] % 4;
-      this.computerZet = new Zet(0, rest);
+      if (rest === 0) {
+        this.computerZet = new Zet(0, this.getRandomInt(4));
+      } else {
+        this.computerZet = new Zet(0, rest);
+      }
       return;
     }
 
@@ -137,6 +141,7 @@ export class GameStateService {
     );
   }
 
+  /** Max is exclusief */
   getRandomInt(max: number, min: number = 1): number {
     min = Math.ceil(min);
     max = Math.floor(max);
