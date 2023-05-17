@@ -46,6 +46,11 @@ mat-form-field {
   border: 4px solid #b53f51 !important;
 }
 
+.disabled {
+  cursor: auto;
+  filter: brightness(50%) !important;
+}
+
 .computer-tekst {
   height: 100px;
   display: flex;

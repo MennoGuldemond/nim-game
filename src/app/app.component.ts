@@ -71,13 +71,17 @@ export class AppComponent implements OnInit {
   }
 
   startVanuitBeginSituatie(): void {
-    this.gameState.beginSituatie = this.beginSituatieparams
-      .split('-')
-      .map((x) => +x);
-    this.gameState.start(
-      this.gameState.beginSituatie.length,
-      this.gameState.beginSituatie
-    );
+    const parsedBeginSituatie = this.beginSituatieparams.split('-');
+    if (parsedBeginSituatie[0] === 'frans') {
+      this.gameState.isFrans = true;
+      this.gameState.start(1, [+parsedBeginSituatie[1]]);
+    } else {
+      this.gameState.beginSituatie = parsedBeginSituatie.map((x) => +x);
+      this.gameState.start(
+        this.gameState.beginSituatie.length,
+        this.gameState.beginSituatie
+      );
+    }
   }
 
   onClickedStart(): void {
@@ -110,15 +114,25 @@ export class AppComponent implements OnInit {
     }, 10);
   }
 
-  getSelectedClass(stapelNummer: number, ficheNummer: number): string {
+  getChipClass(stapelNummer: number, ficheNummer: number): string {
+    let geselecteerd = false;
+    let disabled = false;
+
     if (this.gameState.computerZet) {
       if (
         this.gameState.computerZet.stapelNummer === stapelNummer &&
         this.gameState.computerZet.aantalFiches > ficheNummer
       ) {
-        return 'geselecteerd';
+        geselecteerd = true;
       }
     }
-    return '';
+
+    if (this.gameState.isFrans && ficheNummer >= 3) {
+      disabled = true;
+    }
+
+    return `${geselecteerd ? 'geselecteerd' : ''} ${
+      disabled ? 'disabled' : ''
+    }`;
   }
 }

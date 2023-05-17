@@ -13,6 +13,7 @@ export class GameStateService {
   resultaatTekst: string;
   computerZet: Zet;
   beginSituatie: number[];
+  isFrans: boolean;
 
   start(aantalStapels: number, stapels: number[]): void {
     this.isActief = true;
@@ -22,6 +23,10 @@ export class GameStateService {
   }
 
   verwijderFiches(stapelNummer: number, verwijderAantal: number): void {
+    if (this.isFrans && verwijderAantal > 3) {
+      return;
+    }
+
     if (!this.gameOver) {
       this.stapels[stapelNummer] = this.stapels[stapelNummer] - verwijderAantal;
 
@@ -47,6 +52,12 @@ export class GameStateService {
   }
 
   computerBeurt(): void {
+    if (this.isFrans) {
+      const rest = this.stapels[0] % 4;
+      this.computerZet = new Zet(0, rest);
+      return;
+    }
+
     if (this.isNimSumEven(this.stapels)) {
       console.log('De computer kon geen winnende zet doen.');
       // Kies random zet, de computer kan niet winnen.
@@ -133,7 +144,7 @@ export class GameStateService {
   }
 
   eindigSpel(): void {
-    if (this.beginSituatie) {
+    if (this.beginSituatie || this.isFrans) {
       location.reload();
     }
     this.isActief = false;

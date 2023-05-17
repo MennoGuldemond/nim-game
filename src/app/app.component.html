@@ -60,12 +60,13 @@
   </button>
 </div>
 
-<div
-  *ngIf="gameState.isActief && !gameState.isSpelersBeurt && !gameState.gameOver"
-  class="computer-tekst"
->
-  <h1>De computer heeft een zet gekozen</h1>
+<div *ngIf="gameState.isActief && !gameState.gameOver" class="computer-tekst">
+  <h1 *ngIf="!gameState.isSpelersBeurt">De computer heeft een zet gekozen</h1>
+  <h1 *ngIf="gameState.isSpelersBeurt">Kies een fiche om weg te pakken</h1>
+  <h3 *ngIf="gameState.isFrans">Je mag maximaal 3 fiches wegnemen</h3>
+
   <button
+    *ngIf="!gameState.isSpelersBeurt"
     mat-raised-button
     color="primary"
     [disabled]="!gameForm.valid"
@@ -79,7 +80,7 @@
   <div *ngFor="let aantal of gameState.stapels; index as i" class="game-column">
     <div
       *ngFor="let fichNummer of gameState.getDummyArray(aantal)"
-      [ngClass]="getSelectedClass(i, fichNummer)"
+      [ngClass]="getChipClass(i, fichNummer)"
       class="game-chip"
       (click)="onFicheClicked(i, fichNummer)"
     >
