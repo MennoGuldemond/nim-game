@@ -67,10 +67,12 @@ export class GameStateService {
       // Kies random zet, de computer kan niet winnen.
       // Maar kies niet uit lege stapes.
       const dummyStapels = this.stapels.filter((x) => x > 0);
-      const kiesConditieNummer = this.getRandomInt(dummyStapels.length + 1);
+      const kiesConditieNummer =
+        dummyStapels[this.getRandomInt(0, dummyStapels.length)];
       const gekozenStapel = this.stapels.indexOf(kiesConditieNummer);
       const aantal = this.getRandomInt(this.stapels[gekozenStapel] + 1);
       this.computerZet = new Zet(gekozenStapel, aantal);
+      console.log(this.computerZet);
     } else {
       for (let i = 0; i < this.stapels.length; i++) {
         const testStapelFichces = this.getDummyArray(this.stapels[i]);
